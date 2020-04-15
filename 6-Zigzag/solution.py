@@ -26,9 +26,9 @@ class Solution:
         3) If we reach the end or beginning, we change directions
     """
     def convert(self, s: str, numRows: int) -> str:
-        arr = []
+        rows = []
         for i in range(numRows):
-            arr.append([])
+            rows.append([])
         index = 0
         forward = True
         end = numRows - 1
@@ -40,13 +40,13 @@ class Solution:
                 forward = False
 
             # 1)
-            arr[index].append(char)
+            rows[index].append(char)
 
             # 2)
             index = self.moveAlong(index, forward, end)
         retStr = ""
         for i in range(numRows):
-            retStr += "".join(arr[i])
+            retStr += "".join(rows[i])
         return retStr
         
     """
