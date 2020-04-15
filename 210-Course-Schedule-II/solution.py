@@ -15,42 +15,43 @@ class Solution:
         for i in range(numCourses):
             graph.append([])
 
-        for cc in prerequisites:
-            graph[cc[1]].append(cc[0])
+        for coursePair in prerequisites:
+            graph[coursePair[1]].append(coursePair[0])
 
-        topArr = []
+        topologicalArr = []
         visited = collections.defaultdict(lambda: 0)
-        node = 0
-        while len(topArr) < numCourses:
+        currNode = 0
+        while len(topologicalArr) < numCourses:
             loopDet = collections.defaultdict(lambda: 0)
-            if visited[node] == 0:
-                if self.topSort(graph, topArr, visited, loopDet, node) == False:
+            if visited[currNode] == 0:
+                if self.topSort(graph, topologicalArr, visited, loopDet, currNode) == False:
                     return []
-            node += 1
-        topArr.reverse()
-        return topArr
+            currNode += 1
+        topologicalArr.reverse()
+        return topologicalArr
 
     """
     Perform a topological sort on the graph with loop detection
 
-    Before anything happens, we increment the amount of times we have visited this node by 1
-    If we have visited this node more than once, we have a loop
+    Before anything happens, we increment the amount of times we have visited this node
+    by 1. If we have visited this node more than once, we have a loop, and we need to exit
+    accordingly.
 
     Visit each child that has yet to be visited
     """
-    def topSort(self, graph, top, visited, loopDet, node):
+    def topSort(self, graph, topologicalArr, visited, loopDet, node):
         loopDet[node] += 1
         if loopDet[node] > 1:
             return False
         for child in graph[node]:
             if visited[child] == 0:
-                if self.topSort(graph, top, visited, loopDet, child) == False:
+                if self.topSort(graph, topologicalArr, visited, loopDet, child) == False:
                     return False
         visited[node] += 1
-        top.append(node)
+        topologicalArr.append(node)
 
-numCourses = 2
-prereq = [[1,0], [0,1]]
+numCourses = 4
+prereq = [[1,0], [2,0], [3,1]]
 
 solver = Solution()
 ans = solver.findOrder(numCourses, prereq)
